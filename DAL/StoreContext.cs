@@ -1,5 +1,6 @@
 ﻿using System;
 using Databases_2_Project2_Grocery_store.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -23,13 +24,13 @@ namespace Databases_2_Project2_Grocery_store.DAL
 
 
             modelBuilder.Entity<Client>().HasData(
-                new Client { Id = "2", FirstName = "Bob", LastName = "Belcher", 
+                new Client { Id = 2, FirstName = "Bob", LastName = "Belcher", 
                     Birthday = DateTime.Parse("1977-01-23"), LoyaltyProgram = true },
-                new Client { Id = "3", FirstName = "Hank", LastName = "Hill", 
+                new Client { Id = 3, FirstName = "Hank", LastName = "Hill", 
                     Birthday = DateTime.Parse("1954-04-19"), LoyaltyProgram = false }
             );
             modelBuilder.Entity<Employee>().HasData(
-                new Employee {Id = "1", FirstName = "Jace", LastName = "Beleren", 
+                new Employee {Id = 1, FirstName = "Jace", LastName = "Beleren", 
                     Birthday = DateTime.Parse("1980-02-23"), Location = "Poznan", 
                     HireDate = DateTime.Parse("2021-05-01") }
             );
@@ -42,6 +43,7 @@ namespace Databases_2_Project2_Grocery_store.DAL
                 new Drink { Id = 3, Name = "Polmlek", Type = "Milk", Price = 2.5, Available = true, Volume = 1 },
                 new Drink { Id = 4, Name = "Orange Juice", Type = "Juice", Price = 4, Available = true, Volume = 1 }
             );
+            base.OnModelCreating(modelBuilder);
 
         }
     }

@@ -10,6 +10,8 @@ namespace Databases_2_Project2_Grocery_store.Models
 {
     public class Person : IdentityUser
     {
+        [Key]
+        public new int Id;
         [Required, MaxLength(50)]
         public string FirstName { get; set; }
         [Required, MaxLength(50)]

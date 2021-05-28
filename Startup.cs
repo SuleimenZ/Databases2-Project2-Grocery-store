@@ -36,7 +36,7 @@ namespace Databases_2_Project2_Grocery_store
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<StoreContext>()
+            .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
 
