@@ -23,13 +23,13 @@ namespace Databases_2_Project2_Grocery_store.DAL
 
 
             modelBuilder.Entity<Client>().HasData(
-                new Client { Id = 2, FirstName = "Bob", LastName = "Belcher", 
+                new Client { Id = "2", FirstName = "Bob", LastName = "Belcher", 
                     Birthday = DateTime.Parse("1977-01-23"), LoyaltyProgram = true },
-                new Client { Id = 3, FirstName = "Hank", LastName = "Hill", 
+                new Client { Id = "3", FirstName = "Hank", LastName = "Hill", 
                     Birthday = DateTime.Parse("1954-04-19"), LoyaltyProgram = false }
             );
             modelBuilder.Entity<Employee>().HasData(
-                new Employee {Id = 1, FirstName = "Jace", LastName = "Beleren", 
+                new Employee {Id = "1", FirstName = "Jace", LastName = "Beleren", 
                     Birthday = DateTime.Parse("1980-02-23"), Location = "Poznan", 
                     HireDate = DateTime.Parse("2021-05-01") }
             );

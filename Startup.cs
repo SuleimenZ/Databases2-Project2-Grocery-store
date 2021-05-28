@@ -1,7 +1,10 @@
 using Databases_2_Project2_Grocery_store.DAL;
+using Databases_2_Project2_Grocery_store.Data;
+using Databases_2_Project2_Grocery_store.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +31,15 @@ namespace Databases_2_Project2_Grocery_store
             services.AddControllersWithViews();
             services.AddDbContext<StoreContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("GroceryStore"), o => o.SetPostgresVersion(9, 6)));
+
+            services.AddDefaultIdentity<Person>(options => {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<StoreContext>()
+            .AddDefaultUI()
+            .AddDefaultTokenProviders();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
