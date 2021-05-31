@@ -20,5 +20,7 @@ namespace Databases_2_Project2_Grocery_store.Models
         public DateTime Birthday { get; set; }
         [NotMapped]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
+        [NotMapped]
+        public bool ShowAuthorizedContent { get; set; }
     }
 }

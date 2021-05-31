@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Databases_2_Project2_Grocery_store.DAL;
 using Databases_2_Project2_Grocery_store.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Databases_2_Project2_Grocery_store.Controllers
 {
@@ -20,17 +21,24 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         }
 
         // GET: Products
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortItem, string sortOrder, string selectType)
         {
             IEnumerable<Product> products = _context.Products;
+            ViewBag.SelectType = selectType;
+            switch (selectType)
+            {
+                case "Drink": products = products.Where(p => p.GetType().Name == "Drink"); break;
+                case "Food": products = products.Where(p => p.GetType().Name == "Food"); break;
+            }
             ViewBag.NextSortOrder = sortOrder == null || sortOrder == "descending" ? "ascending" : "descending";
-            switch(sortOrder)
+            ViewBag.SortItem = sortItem;
+            switch (sortOrder)
             {
                 case "descending":
-                    products = products.OrderByDescending(p => p.Name);
+                    products = sortItem == "name" ? products.OrderByDescending(p => p.Name) : products.OrderByDescending(p => p.Price);
                     break;
                 case "ascending":
-                    products = products.OrderBy(p => p.Name);
+                    products = sortItem == "name" ? products.OrderBy(p => p.Name) : products.OrderBy(p => p.Price);
                     break;
                 default:
                     break;
@@ -57,6 +65,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         }
 
         // GET: Products/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +75,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Type,Price,Available")] Product product)
         {
@@ -79,6 +89,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,6 +109,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Price,Available")] Product product)
         {
@@ -130,6 +142,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -149,6 +162,7 @@ namespace Databases_2_Project2_Grocery_store.Controllers
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

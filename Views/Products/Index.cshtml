@@ -10,17 +10,23 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@Html.DropDownList("Type", new SelectListItem[] {
+    new SelectListItem() { Text = "Select Type", Value = "" },
+    new SelectListItem() { Text = "All", Value = "All" },
+    new SelectListItem() { Text = "Food", Value = "Food" },
+    new SelectListItem() { Text = "Drink", Value = "Drink" }},
+new { onchange = $"document.location.href = '/Products?sortOrder={ViewBag.NextSortOrder}&sortItem={ViewBag.SortItem}&selectType=' + this.options[this.selectedIndex].value;" })
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NextSortOrder})
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NextSortOrder, sortItem = "name", selectType = ViewBag.SelectType})
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.NextSortOrder, sortItem = "price", selectType = ViewBag.SelectType })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Available)
@@ -29,26 +35,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Available)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Available)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a>| </a> <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a>| </a> <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
