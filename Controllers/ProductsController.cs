@@ -64,6 +64,41 @@ namespace Databases_2_Project2_Grocery_store.Controllers
             return View(product);
         }
 
+        // GET: Products/DetailsDrink/5
+        public async Task<IActionResult> DetailsDrink(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Drinks
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        // GET: Products/DetailsFood/5
+        public async Task<IActionResult> DetailsFood(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Foods
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
         // GET: Products/Create
         [Authorize]
         public IActionResult Create()
@@ -88,6 +123,49 @@ namespace Databases_2_Project2_Grocery_store.Controllers
             return View(product);
         }
 
+        // GET: Products/CreateDrink
+        [Authorize]
+        public IActionResult CreateDrink()
+        {
+            return View();
+        }
+
+        // POST: Products/CreateDrink
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDrink([Bind("Id,Name,Type,Price,Available,Volume")] Drink product)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+
+        // GET: Products/CreateFood
+        [Authorize]
+        public IActionResult CreateFood()
+        {
+            return View();
+        }
+
+        // POST: Products/CreateFood
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFood([Bind("Id,Name,Type,Price,Available,Weight")] Food product)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
         // GET: Products/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
@@ -112,6 +190,108 @@ namespace Databases_2_Project2_Grocery_store.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Price,Available")] Product product)
+        {
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(product);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductExists(product.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+
+        // GET: Products/EditDrink/5
+        [Authorize]
+        public async Task<IActionResult> EditDrink(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Drinks.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+        // POST: Products/EditDrink/5
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDrink(int id, [Bind("Id,Name,Type,Price,Available,Volume")] Drink product)
+        {
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(product);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductExists(product.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+
+        // GET: Products/EditDrink/5
+        [Authorize]
+        public async Task<IActionResult> EditFood(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Foods.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+        // POST: Products/EditFood/5
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFood(int id, [Bind("Id,Name,Type,Price,Available,Weight")] Food product)
         {
             if (id != product.Id)
             {
